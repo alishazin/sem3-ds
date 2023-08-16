@@ -64,6 +64,11 @@ int main() {
 	for (i=0; i<=count; i++) {
 		printTextPart(text, startIndexes[i], endIndexes[i]);
 	}
+
+    cout << "--------- Author ----------------" << endl;
+	cout << "Ali Izzath Shazin" << endl;
+	cout << "220071601028" << endl;
+	cout << "B. Tech CSE A" << endl;
 	
 	return 0;
 }
