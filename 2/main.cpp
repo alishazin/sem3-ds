@@ -3,67 +3,34 @@
 #include <iostream>
 using namespace std;
 
-void printTextPart(string text, int start, int end) {
-	for (int i=start; i<=end; i++) {
-		cout << text[i];
-	}
-	cout << endl;
-}
-
 int main() {
 
-	int i, last, current, flag=0, count=0;
+	int i, current, flag=0;
 	string text;
 	
 	cout << "Enter the text to check : ";
 	cin >> text;
 	
-	last = (int) text[0];
-	
 	int length = text.length();
 	
-	int startIndexes[length], endIndexes[length];
-	
 	for (i=1; i<length; i++) {
-		
-		current = (int) text[i];
 
-        if (i == length - 1) {
-
-            if (flag == 1) {
-                if (current - 1 == last || current - last - 1 == 32 || last - current + 1 == 32) {
-                    endIndexes[count] = i;
-                } else {
-                    endIndexes[count] = i - 1;
-                }
-            } else {
-                if (current - 1 == last || current - last - 1 == 32 || last - current + 1 == 32) {
-                    startIndexes[count] = i - 1;
-                    endIndexes[count] = i;
-                }
-            }
-        }
-		
-		else if (current - 1 == last || current - last - 1 == 32 || last - current + 1 == 32) {
+        if (text[i] - 1 == text[i-1] || text[i] - text[i-1] - 1 == 32 || text[i-1] - text[i] + 1 == 32) {
             if (flag == 0) {
-                startIndexes[count] = i - 1;
+                cout << text[i - 1] << text[i]; 
                 flag = 1;
+            } else {
+                cout << text[i]; 
             }
         } else {
             if (flag == 1) {
-                endIndexes[count] = i - 1;
-                count++;
+                cout << endl;
                 flag = 0;
             }
         }
-        
-        last = current;
-			
-	}
+    }
 	
-	for (i=0; i<=count; i++) {
-		printTextPart(text, startIndexes[i], endIndexes[i]);
-	}
+    cout << endl;
 
     cout << "--------- Author ----------------" << endl;
 	cout << "Ali Izzath Shazin" << endl;
