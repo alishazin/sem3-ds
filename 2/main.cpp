@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	int i, current, flag=0;
+	int i, flag=0;
 	string text;
 	
 	cout << "Enter the text to check : ";
