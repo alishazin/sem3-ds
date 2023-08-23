@@ -27,11 +27,16 @@ class StackEmpty: public Exception {
     }
 };
 
-class Stack {
+class BaseStack {
+    public:
+    virtual void display() = 0;
+};
+
+template <class DType = int> class Stack: public BaseStack {
 
     int _size;
     int top;
-    int *array;
+    DType *array;
 
     public:
 
@@ -39,7 +44,7 @@ class Stack {
             this->_size = _size;
             this->top = -1;
 
-            this->array = new int[_size];
+            this->array = new DType[_size];
         }
 
         int isEmpty() {
@@ -56,7 +61,7 @@ class Stack {
             return this->_size;
         }      
 
-        void push(int item) {
+        void push(DType item) {
             
             if (this->isFull()) {
                 throw StackOverflow();
@@ -66,7 +71,7 @@ class Stack {
             this->array[this->top] = item;
         }
 
-        int pop() {
+        DType pop() {
             
             if (this->isEmpty()) {
                 throw StackUnderflow();
@@ -93,7 +98,7 @@ class Stack {
             cout << "Size = " << this->_size << endl << endl; 
         }
 
-        int peek() {
+        DType peek() {
 
             if (this->isEmpty()) {
                 throw StackEmpty();
@@ -104,24 +109,41 @@ class Stack {
 
 };
 
-ostream& operator<<(ostream &out, Stack obj) {
+ostream& operator<<(ostream &out, BaseStack &obj) {
     obj.display();
     return out;
 }
 
 int main() {
 
-    Stack stack = Stack(5);
+    Stack<> stack = Stack<>(5); // By default, its int
+    // Stack<int> stack = Stack<int>(5);
+    // Stack<char> stack = Stack<char>(5);
+    // Stack<string> stack = Stack<string>(5);
     
     stack.push(11);
     stack.push(14);
     stack.push(17);
     stack.push(21);
     stack.push(23);
+
+    // stack.push('a');
+    // stack.push('b');
+    // stack.push('c');
+    // stack.push('d');
+    // stack.push('e');
+
+    // stack.push("AA");
+    // stack.push("BB");
+    // stack.push("CC");
+    // stack.push("DD");
+    // stack.push("EE");
+
     try {
         stack.push(26);
+        // stack.push('f');
+        // stack.push("FF");
     } catch(Exception &e) {
-        cout << "ads" << endl;
         cout << e.msg() << endl;
     } // catch all derived classes from Exception
 
