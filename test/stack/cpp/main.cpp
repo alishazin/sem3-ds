@@ -3,27 +3,27 @@ using namespace std;
 
 class Exception {
     public:
-    virtual void msg() = 0;
+    virtual string msg() = 0;
 };
 
 class StackOverflow: public Exception {
     public:
-    void msg() {
-        cout << "Stack is full." << endl;
+    string msg() {
+        return "Stack is full.";
     }
 };
 
 class StackUnderflow: public Exception {
     public:
-    void msg() {
-        cout << "Stack is empty." << endl;
+    string msg() {
+        return "Stack is empty.";
     }
 };
 
 class StackEmpty: public Exception {
     public:
-    void msg() {
-        cout << "Stack is empty." << endl;
+    string msg() {
+        return "Stack is empty.";
     }
 };
 
@@ -122,7 +122,7 @@ int main() {
         stack.push(26);
     } catch(Exception &e) {
         cout << "ads" << endl;
-        e.msg();
+        cout << e.msg() << endl;
     } // catch all derived classes from Exception
 
     stack.display();

@@ -1,19 +1,30 @@
 #include <iostream>
 using namespace std;
 
-class InvalidSize {
+class Exception {
     public:
-    string msg = "Size should be greater than zero.";
+    virtual string msg() = 0;
 };
 
-class OperationFailed {
+class InvalidSize: public Exception {
     public:
-    string msg = "Both matrix should be of same size.";
+    string msg() {
+        return "Size should be greater than zero.";
+    }
 };
 
-class MultiplicationFailed {
+class OperationFailed: public Exception {
     public:
-    string msg = "Number of columns in the 1st matrix must be equal to the rows in the 2nd matrix.";
+    string msg() {
+        return "Both matrix should be of same size.";
+    }
+};
+
+class MultiplicationFailed: public Exception {
+    public:
+    string msg() {
+        return "Number of columns in the 1st matrix must be equal to the rows in the 2nd matrix.";
+    }
 };
 
 class Matrix {
