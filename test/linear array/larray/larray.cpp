@@ -1,33 +1,47 @@
 #include <iostream>
 using namespace std;
 
-class ArrayOverflow {
+class Exception {
     public:
-    string msg = "Array Overflow!";
+    virtual string msg() = 0;
 };
 
-class ArrayOutOfBound {
+class ArrayOverflow: public Exception {
     public:
-    string msg = "Array out of bound";
+    string msg() {
+        return "Array Overflow!";
+    }
 };
 
-class LinearArray {
+class ArrayOutOfBound: public Exception {
+    public:
+    string msg() {
+        return "Array out of bound!";
+    }
+};
+
+class BaseLinearArray {
+    public:
+    virtual void display() = 0;
+};
+
+template <class DType = int> class LinearArray: public BaseLinearArray {
 
     int size;
-    int *arr;
+    DType *arr;
     int n;
 
     public:
 
     LinearArray() {
         this->size = 0;
-        this->arr = new int[0];
+        this->arr = new DType[0];
         this->n = 0;
     }
 
     LinearArray(int size) {
         this->size = size;
-        this->arr = new int[size];
+        this->arr = new DType[size];
         this->n = 0;
     }
 
@@ -39,7 +53,7 @@ class LinearArray {
         return this->n;
     }
 
-    int get(int index) {
+    DType get(int index) {
         if (index < this->n) {
             return this->arr[index];
         } else {
@@ -47,7 +61,7 @@ class LinearArray {
         }
     }
 
-    void set(int index, int item) {
+    void set(int index, DType item) {
         if (index < this->n) {
             this->arr[index] = item;
         } else {
@@ -55,7 +69,7 @@ class LinearArray {
         }
     }
 
-    void insert(int index, int item) {
+    void insert(int index, DType item) {
         if (this->n == this->size) {
             throw ArrayOverflow();
         }
@@ -71,18 +85,18 @@ class LinearArray {
         this->n++;
     }
     
-    void insert(int index, int item, bool dynamic) {
+    void insert(int index, DType item, bool dynamic) {
         if (dynamic && this->size == this->n) {
             this->resize(this->size + 1);
         } 
         this->insert(index, item);
     }
 
-    void append(int item) {
+    void append(DType item) {
         this->insert(this->n, item);
     }
 
-    void append(int item, bool dynamic) {
+    void append(DType item, bool dynamic) {
         if (dynamic && this->size == this->n) {
             this->resize(this->size + 1);
         } 
@@ -103,23 +117,23 @@ class LinearArray {
         this->resize(this->n);
     }
 
-    int remove(int index) {
-        int intRemoved;
+    DType remove(int index) {
+        DType Removed;
 
         if (index > this->n - 1 || index < 0) {
            throw ArrayOutOfBound();
         }
 
-        intRemoved = this->arr[index];
+        Removed = this->arr[index];
         for (int i=index; i<this->n-1; i++) {
             this->arr[i] = this->arr[i + 1];
         }
         this->n--;
 
-        return intRemoved;
+        return Removed;
     }
 
-    int search(int item) {
+    int search(DType item) {
         for (int i=0; i<this->n; i++) {
             if (this->arr[i] == item) {
                 return i;
@@ -129,7 +143,7 @@ class LinearArray {
     }
 
     void reverse() {
-        int temp;
+        DType temp;
         for (int i=0; i<(int) (this->n/2); i++) {
             temp = this->arr[i];
             this->arr[i] = this->arr[this->n - (i + 1)];
@@ -138,7 +152,8 @@ class LinearArray {
     }
 
     void sort() {
-        int i, j, temp, swapped_flag = 0;
+        int i, j, swapped_flag = 0;
+        DType temp;
     
         for (i=0; i<this->n-1; i++) {
 
@@ -160,7 +175,7 @@ class LinearArray {
     }
 
     void resize(int newSize) {
-        int *newArr = new int[newSize];
+        DType *newArr = new DType[newSize];
 
         for (int i=0; i<newSize; i++) {
             if (i < n) {
@@ -180,7 +195,7 @@ class LinearArray {
 
 };
 
-ostream& operator<<(ostream &out, LinearArray obj) {
+ostream& operator<<(ostream &out, BaseLinearArray &obj) {
     obj.display();
     return out;
 }
