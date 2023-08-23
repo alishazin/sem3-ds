@@ -1,9 +1,31 @@
 #include <iostream>
 using namespace std;
 
-class StackOverflow {};
-class StackUnderflow {};
-class StackEmpty {};
+class Exception {
+    public:
+    virtual void msg() = 0;
+};
+
+class StackOverflow: public Exception {
+    public:
+    void msg() {
+        cout << "Stack is full." << endl;
+    }
+};
+
+class StackUnderflow: public Exception {
+    public:
+    void msg() {
+        cout << "Stack is empty." << endl;
+    }
+};
+
+class StackEmpty: public Exception {
+    public:
+    void msg() {
+        cout << "Stack is empty." << endl;
+    }
+};
 
 class Stack {
 
@@ -96,6 +118,12 @@ int main() {
     stack.push(17);
     stack.push(21);
     stack.push(23);
+    try {
+        stack.push(26);
+    } catch(Exception &e) {
+        cout << "ads" << endl;
+        e.msg();
+    } // catch all derived classes from Exception
 
     stack.display();
 
