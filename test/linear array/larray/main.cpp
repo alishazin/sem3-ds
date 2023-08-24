@@ -31,7 +31,6 @@ int main() {
     cout << arr << endl;
     arr.sort();
     cout << arr << endl;
-    // cout << arr << endl;
 
     return 0;
 }

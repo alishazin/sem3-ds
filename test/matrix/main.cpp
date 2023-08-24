@@ -34,11 +34,9 @@ class Matrix {
 
     Matrix doAddOrSub(Matrix obj, int instance) {
         if (this->_rows != obj._rows || this->_cols != obj._cols) throw OperationFailed();
+        
         Matrix returnMat = Matrix(this->_rows, this->_cols);
-        returnMat.mat = new int*[this->_rows];
-        for(int i = 0; i < this->_rows; ++i) {
-            returnMat.mat[i] = new int[this->_cols];
-        }
+        returnMat.initializeMatrix();
 
         for (int i=0; i<this->_rows; i++) {
             for (int j=0; j<this->_cols; j++) {
@@ -53,10 +51,10 @@ class Matrix {
         return returnMat;
     }
 
-    void initializeMatrix(int rows, int cols) {
-        this->mat = new int*[rows];
-        for(int i = 0; i < rows; i++) {
-            this->mat[i] = new int[cols];
+    void initializeMatrix() {
+        this->mat = new int*[this->_rows];
+        for(int i = 0; i < this->_rows; i++) {
+            this->mat[i] = new int[this->_cols];
         }
     }
 
@@ -67,7 +65,7 @@ class Matrix {
             this->_rows = rows;
             this->_cols = cols;
 
-            initializeMatrix(rows, cols);
+            this->initializeMatrix();
         }
 
         Matrix operator+(Matrix obj) {
@@ -82,7 +80,7 @@ class Matrix {
             if (this->_cols != obj._rows) throw MultiplicationFailed();
             
             Matrix returnMat = Matrix(this->_rows, obj._cols);
-            returnMat.initializeMatrix(this->_rows, obj._cols);
+            returnMat.initializeMatrix();
 
             for(int i=0; i<this->_rows; i++) {    
                 for(int j=0; j<obj._cols; j++) {  
@@ -98,7 +96,7 @@ class Matrix {
 
         Matrix operator*(int scalar) {            
             Matrix returnMat = Matrix(this->_rows, this->_cols);
-            returnMat.initializeMatrix(this->_rows, this->_cols);
+            returnMat.initializeMatrix();
 
             for(int i=0; i<this->_rows; i++) {    
                 for(int j=0; j<this->_cols; j++) {  
@@ -143,21 +141,46 @@ ostream& operator<<(ostream &out, Matrix obj) {
 }
 
 int main() {
+    
+    int mat1_r, mat1_c, mat2_r, mat2_c;
 
-    Matrix m1 = Matrix(2, 1);
-    m1.askElements();
-    cout << m1 << endl;
+    cout << "Enter mat1 rows and columns: ";
+    cin >> mat1_r >> mat1_c;
+    Matrix mat1 = Matrix(mat1_r, mat1_c);
 
-    Matrix m2 = Matrix(1, 3);
-    m2.askElements();
-    cout << m2 << endl;
+    cout << "Enter mat1 elements: " << endl;
+    mat1.askElements();
+    cout << mat1 << endl;
 
-    // Matrix m3 = m1 + m2;
-    // cout << m3 << endl;
-    // cout << m1 - m2 << endl;
-    cout << (m1 * m2).rows() << endl;
-    cout << (m1 * m2).cols() << endl;
-    // cout << m1 * 10 << endl;
+    cout << "Enter mat2 rows and columns: ";
+    cin >> mat2_r >> mat2_c;
+    Matrix mat2 = Matrix(mat2_r, mat2_c);
+
+    cout << "Enter mat2 elements: " << endl;
+    mat2.askElements();
+    cout << mat2 << endl;
+
+    try {
+        Matrix mat3 = mat1 + mat2;
+        cout << mat3 << endl;   
+    } catch(Exception &e) {
+        cout << "Addition Failed: " << e.msg() << endl;
+    }
+
+    try {
+        cout << mat1 - mat2 << endl; 
+    } catch(Exception &e) {
+        cout << "Subtraction Failed: " << e.msg() << endl;
+    }
+
+    try {
+        cout << mat1 * mat2 << endl;   
+    } catch(Exception &e) {
+        cout << "Multiplication Failed: " << e.msg() << endl;
+    }
+
+    cout << mat1 * 10 << endl;   
 
     return 0;
+    
 }
