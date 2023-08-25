@@ -23,6 +23,7 @@ class ListItem {
     public:
         
         void display() {
+
             if (this->instance == 1) {
                 cout << this->item.SHORT;
             } else if (this->instance == 2) {
@@ -35,9 +36,11 @@ class ListItem {
                 cout << this->item.DOUBLE;
             } else if (this->instance == 6) {
                 cout << this->item.CHAR;
-            }
+            } 
         }
 };
+
+class ListReturn;
 
 class List {
     
@@ -190,13 +193,13 @@ class List {
                     this->_nestedItems[nestedIndex].display();
                 } else {
                     this->_items[i].display();
+                }
                 
-                    if (i != this->_length - 1) {
-                        cout << ", ";
-                    }
+                if (i != this->_length - 1) {
+                    cout << ", ";
                 }
             }
-            cout << "], ";
+            cout << "]";
         }
 
         int getNestedIndexIfExist(int index) {
@@ -208,12 +211,98 @@ class List {
             return -1;
         }
 
+        ListReturn operator[](int index); 
+
 };
+
+class ListReturn {
+    
+    public:
+
+        int type;
+        string type_name;
+        listItemStorage item;
+        List list;
+
+        void display() {
+
+            cout << "{\n\ttype: " << this->type << "\n\ttype_name: " << this->type_name << "\n\t";
+
+            if (this->type == 1) {
+                cout << "item: " << this->item.SHORT;
+            } else if (this->type == 2) {
+                cout << "item: " << this->item.INT;
+            } else if (this->type == 3) {
+                cout << "item: " << this->item.LONG;
+            } else if (this->type == 4) {
+                cout << "item: " << this->item.FLOAT;
+            } else if (this->type == 5) {
+                cout << "item: " << this->item.DOUBLE;
+            } else if (this->type == 6) {
+                cout << "item: " << this->item.CHAR;
+            } else if (this->type == 7) {
+                cout << "list: ";
+                this->list.display();
+            }
+
+            cout << "\n}";
+        }
+
+};
+
+ListReturn List::operator[](int index) {
+    int nestedIndex = this->getNestedIndexIfExist(index);
+
+    ListReturn obj;
+    if (nestedIndex == -1) {
+        
+        listItemStorage storageObj;
+
+        if (this->_items[index].instance == 1) {
+            obj.type = 1;
+            obj.type_name = "SHORT";
+        } else if (this->_items[index].instance == 2) {
+            obj.type = 2;
+            obj.type_name = "INT";
+        } else if (this->_items[index].instance == 3) {
+            obj.type = 3;
+            obj.type_name = "LONG";
+        } else if (this->_items[index].instance == 4) {
+            obj.type = 4;
+            obj.type_name = "FLOAT";
+        } else if (this->_items[index].instance == 5) {
+            obj.type = 5;
+            obj.type_name = "DOUBLE";
+        } else if (this->_items[index].instance == 6) {
+            obj.type = 6;
+            obj.type_name = "CHAR";
+        }
+        obj.item = this->_items[index].item;
+
+    } else {
+
+        obj.type = 7;
+        obj.type_name = "LIST";
+        obj.list = this->_nestedItems[nestedIndex];
+
+    }
+    return obj;
+}
+
+ostream& operator<<(ostream &out, List &obj) {
+    obj.display();
+    return out;
+}
+
+ostream& operator<<(ostream &out, ListReturn &obj) {
+    obj.display();
+    return out;
+}
 
 int main() {
 
     List l;
-    l.append(10);
+    l.append(10.55);
     l.append(40);
 
     List l1;
@@ -221,41 +310,30 @@ int main() {
     l1.append(400);
 
     l.append(l1);
-    l.append(1);
 
-    List l2;
-    l2.append(-120);
-    l2.append(-240);
+    cout << l << endl;
+
+    ListReturn ret = l[0];
+
+    // cout << ret.type << endl;
+    // cout << ret.type_name << endl;
+    // cout << ret.item.INT << endl;
+    cout << ret << endl;
+    cout << ret.item.DOUBLE << endl;
+    // ret.display();
     
-    List l3;
-    l3.append(0.12);
-    l3.append('A');
-    l2.append(l3);
-    
-    l.append(l2);
+    ListReturn ret2 = l[2];
 
-    // short a = 20;
-    // l.append(a);
+    // cout << ret2.type << endl;
+    // cout << ret2.type_name << endl;
+    cout << ret2 << endl;
+    cout << ret2.list << endl;
 
-    // int z = 20;
-    // l.append(z);
-
-    // float b = 20.255f;
-    // l.append(b);
-    // l.append(18.22f);
-
-    // double c = 32.56;
-    // l.append(c);
-    // l.append(54.23);
-
-    // long d = 23434;
-    // l.append(d);
-
-    // char e = 'A';
-    // l.append(e);
-    // l.append('B');
-
-    l.display();
+    ListReturn ret3 = ret2.list[0];
+    // cout << ret3.type << endl;
+    // cout << ret3.type_name << endl;
+    cout << ret3.item.INT << endl;
+    cout << ret3 << endl;
 
     return 0;
 }
