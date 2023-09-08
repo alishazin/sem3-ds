@@ -24,7 +24,11 @@ LinearArray<string> splitString(string text, char keyword) {
     for (int i=0; i<text.length(); i++) {
         
         if (text[i] == keyword || i == text.length() - 1) {
+            
             if (count != 0) {
+                if (i == text.length() - 1) {
+                    latest_string.push_back(text[i]);
+                }
                 returnArray.append(latest_string, true);
             }
 
@@ -46,6 +50,7 @@ LinearArray<string> getPostfixFromInfix(string exp) {
     LinearArray<string> postfix;
 
     LinearArray<string> LAexp = splitString(exp, space);
+    cout << LAexp << endl;
     
     Stack<string> stack(LAexp.getLength());
 
@@ -130,15 +135,100 @@ LinearArray<string> getPostfixFromInfix(string exp) {
     return postfix;
 }
 
+float evaluatePostfix(LinearArray<string> postfix) {
+    
+    // 10 11 * 12 + 4 * 55 +
+    
+    // 10       10   
+    // 11       10 11
+    // *        110
+    // 12       110 12
+    // +        122
+    // 4        122 4
+    // *        488
+    // 55       488 55
+    // +        543
+
+    Stack<float> stack(postfix.getLength());
+
+    for (int i=0; i<postfix.getLength(); i++) {
+
+        int topNum;
+        int topMinusOneNum;
+
+        if (postfix.get(i) == "+") {
+            try {
+                stack.push(stack.pop() + stack.pop());
+            } catch(Exception &e) {
+                cout << "\nInvalid postfix" << endl;
+                return -1;
+            }
+
+        } else if (postfix.get(i) == "-") {
+
+            try {
+                topNum = stack.pop();
+                topMinusOneNum = stack.pop();
+            } catch(Exception &e) {
+                cout << "\nInvalid postfix" << endl;
+                return -1;
+            }
+
+            stack.push(topMinusOneNum - topNum);
+            
+        } else if (postfix.get(i) == "*") {
+
+            try {
+                stack.push(stack.pop() * stack.pop());
+            } catch(Exception &e) {
+                cout << "\nInvalid postfix" << endl;
+                return -1;
+            }
+            
+        } else if (postfix.get(i) == "/") {
+
+            try {
+                topNum = stack.pop();
+                topMinusOneNum = stack.pop();
+            } catch(Exception &e) {
+                cout << "\nInvalid postfix" << endl;
+                return -1;
+            }
+
+            stack.push(topMinusOneNum / topNum);
+            
+        } else {
+            try {
+               stack.push((float) stoi(postfix.get(i)));
+            } catch(std::invalid_argument e) {
+                cout << endl << "Postfix expression should only contain numbers and operators" << endl;
+                return -1;
+            }
+        }
+    }
+
+    try {
+        if (stack.getTop() != 0) {
+            throw StackUnderflow(); // any derived error
+        }
+        return stack.pop();
+    } catch(Exception &e) {
+        cout << "\nInvalid postfix" << endl;
+        return -1;
+    }
+}
+
 int main() {
 
-    // string exp = "(A*B+C)*D+E";
+    // string exp = "( A * B + C ) * D + E";
     string exp = "( 10 * 11 + 12 ) * 4 + 55";
         
     LinearArray<string> aa = getPostfixFromInfix(exp);
     // cout << aa << endl;
 
     for (int i=0; i<aa.getLength(); i++) cout << aa.get(i) << " ";
+
+    cout << evaluatePostfix(aa) << endl;
 
     return 0;
 }

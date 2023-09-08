@@ -59,7 +59,11 @@ template <class DType = int> class Stack: public BaseStack {
 
         int size() {
             return this->_size;
-        }      
+        }   
+
+        int getTop() {
+            return this->top;
+        }   
 
         void push(DType item) {
             
