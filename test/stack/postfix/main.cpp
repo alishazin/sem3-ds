@@ -227,6 +227,7 @@ int main() {
     // cout << aa << endl;
 
     for (int i=0; i<aa.getLength(); i++) cout << aa.get(i) << " ";
+    cout << endl;
 
     cout << evaluatePostfix(aa) << endl;
 
