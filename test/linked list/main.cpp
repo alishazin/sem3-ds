@@ -162,6 +162,29 @@ template <class DType = int> class LinkedList: public BaseLinkedList {
         }
     }
 
+    void Sort() {
+        if (this->Head == NULL) return;
+
+        int i, j;
+        int swapped;
+        for (i = 0; i < this->_length - 1; i++) {
+            swapped = 0;
+            
+            Node* node = this->Head;
+            for (j = 0; j < this->_length - i - 1; j++) {
+                if (node->value > node->next->value) {
+                    DType temp = node->value;
+                    node->value = node->next->value;
+                    node->next->value = temp;
+                    swapped = 1;
+                }
+                node = node->next;
+            }
+    
+            if (swapped == 0) break;
+        }
+    }
+
 };
 
 ostream& operator<<(ostream &out, BaseLinkedList &obj) {
@@ -172,24 +195,27 @@ ostream& operator<<(ostream &out, BaseLinkedList &obj) {
 int main() {
 
     LinkedList l;
-    l.Insert(0, 10);
-    l.Insert(1, 20);
-    l.Append(30);
+    l.Insert(0, 30);
+    l.Insert(1, 10);
+    l.Append(20);
     l.Insert(3, 40);
     l.Insert(3, 50);
     l.Insert(5, 60);
     l.Insert(0, 70);
 
-    cout << l << endl;
-    l.Blueprint();
+    // cout << l << endl;
+    // l.Blueprint();
     
-    cout << l.Delete(0) << endl;
-    cout << l << endl;
-    l.Blueprint();
+    // cout << l.Delete(0) << endl;
+    // cout << l << endl;
+    // l.Blueprint();
 
-    cout << l.Delete(1) << endl;
+    // cout << l.Delete(1) << endl;
     cout << l << endl;
-    l.Blueprint();
+    // l.Blueprint();
+
+    l.Sort();
+    cout << l << endl;
 
     // cout << l.Delete(4) << endl;
     // cout << l << endl;
