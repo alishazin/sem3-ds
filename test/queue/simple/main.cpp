@@ -139,11 +139,6 @@ class Queue {
 
     void blueprint() {
 
-        // if (this->isEmpty()) {
-        //     cout << "Empty Queue" << endl;
-        //     return;
-        // }
-
         for (int i=0; i<this->_size; i++) {
             cout << i << " | ";
             if (i < this->_front) {
