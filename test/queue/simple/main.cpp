@@ -127,11 +127,6 @@ class Queue {
 
     void display() {
 
-        if (this->isEmpty()) {
-            cout << "Empty Queue" << endl;
-            return;
-        }
-
         cout << "[";
         for (int i=this->_front; i<=this->_rear; i++) {
             cout << this->arr[i];
@@ -144,10 +139,10 @@ class Queue {
 
     void blueprint() {
 
-        if (this->isEmpty()) {
-            cout << "Empty Queue" << endl;
-            return;
-        }
+        // if (this->isEmpty()) {
+        //     cout << "Empty Queue" << endl;
+        //     return;
+        // }
 
         for (int i=0; i<this->_size; i++) {
             cout << i << " | ";
@@ -155,6 +150,8 @@ class Queue {
                 cout << this->arr[i];
             } else if (i == this->_front && i == this->_rear) {
                 cout << this->arr[i] << " <- FRONT <- REAR";
+            } else if (this->isEmpty() && i == this->_front) {
+                cout << "GARBAGE" << " <- FRONT";
             } else if (i == this->_front) {
                 cout << this->arr[i] << " <- FRONT";
             } else if (i < this->_rear) {
@@ -174,6 +171,8 @@ class Queue {
 int main() {
 
     Queue q(4);
+    q.display();
+    q.blueprint();
 
     q.enqueue(10);
     q.enqueue(20);
@@ -193,6 +192,14 @@ int main() {
     q.blueprint();
 
     q.enqueue(200);
+    q.display();
+    q.blueprint();
+
+    q.dequeue();
+    q.display();
+    q.blueprint();
+    
+    q.dequeue();
     q.display();
     q.blueprint();
 
