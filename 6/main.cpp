@@ -44,7 +44,7 @@ class Queue {
             int poppedItem = this->arr[this->_front];
             cout << "Popped Item: " << poppedItem << endl; 
             this->_front++;
-            if (this->isEmpty() || this->_front > this->_rear) {
+            if (this->_front > this->_rear) {
                 this->_rear = -1;
                 this->_front = 0;
             }
