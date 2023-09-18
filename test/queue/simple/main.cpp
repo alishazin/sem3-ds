@@ -141,21 +141,21 @@ class Queue {
 
         for (int i=0; i<this->_size; i++) {
             cout << i << " | ";
-            if (i < this->_front) {
-                cout << this->arr[i];
-            } else if (i == this->_front && i == this->_rear) {
-                cout << this->arr[i] << " <- FRONT <- REAR";
-            } else if (this->isEmpty() && i == this->_front) {
-                cout << "GARBAGE" << " <- FRONT";
-            } else if (i == this->_front) {
-                cout << this->arr[i] << " <- FRONT";
-            } else if (i < this->_rear) {
-                cout << this->arr[i];
-            } else if (i == this->_rear) {
-                cout << this->arr[i] << " <- REAR";
-            } else if (i > this->_rear) {
-                cout << "GARBAGE";
+
+            if (i < this->_front || i > this->_rear || this->_rear == -1) {
+                cout << "GARBAGE" << endl;
+                continue;
             }
+        
+            cout << this->arr[i];
+
+            if (i == this->_rear) {
+                cout << " <- REAR";
+            }
+            if (i == this->_front) {
+                cout << " <- FRONT";
+            }
+
             cout << endl;
         }
 
