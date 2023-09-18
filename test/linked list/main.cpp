@@ -185,6 +185,19 @@ template <class DType = int> class LinkedList: public BaseLinkedList {
         }
     }
 
+    int Search(DType item) {
+        Node* node = this->Head;
+        int count =0;
+
+        while (node != NULL) {
+            if (node->value == item) return count;
+            node = node->next;
+            count++;
+        }
+
+        return -1;
+    }
+
 };
 
 ostream& operator<<(ostream &out, BaseLinkedList &obj) {
@@ -203,19 +216,22 @@ int main() {
     l.Insert(5, 60);
     l.Insert(0, 70);
 
-    // cout << l << endl;
-    // l.Blueprint();
+    cout << l << endl;
+    l.Blueprint();
+
+    cout << l.Search(40) << endl;
     
     // cout << l.Delete(0) << endl;
     // cout << l << endl;
     // l.Blueprint();
 
     // cout << l.Delete(1) << endl;
-    cout << l << endl;
+    // cout << l << endl;
     // l.Blueprint();
 
-    l.Sort();
-    cout << l << endl;
+    // l.Sort();
+    // cout << l << endl;
+    // l.Blueprint();
 
     // cout << l.Delete(4) << endl;
     // cout << l << endl;
@@ -232,15 +248,15 @@ int main() {
     // cout << l[2] << endl;
 
     // LinkedList<char> l;
-    // l.Append('A');
     // l.Append('B');
-    // l.Append('C');
     // l.Append('D');
+    // l.Append('A');
+    // l.Append('C');
 
     // cout << l << endl;
     // l.Blueprint();
 
-    // cout << l.Delete(1) << endl;
+    // l.Sort();
     // cout << l << endl;
 
     return 0;
