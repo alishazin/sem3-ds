@@ -143,11 +143,10 @@ class Queue {
             cout << i << " | ";
 
             if (i < this->_front || i > this->_rear || this->_rear == -1) {
-                cout << "GARBAGE" << endl;
-                continue;
+                cout << "GARBAGE";
+            } else {
+                cout << this->arr[i];
             }
-        
-            cout << this->arr[i];
 
             if (i == this->_rear) {
                 cout << " <- REAR";
