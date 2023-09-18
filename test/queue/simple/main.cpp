@@ -78,23 +78,33 @@ class Queue {
     }
 
     int isFull() {
-        if (this->_rear == this->_size - 1) return 1;
+        if (this->_rear == this->_size - 1 || this->_front == this->_size) return 1;
         return 0;
     }
 
-    void push(int item) {
-        if (isFull()) {
+    void enqueue(int item) {
+        if (this->isFull()) {
             throw QueueOverflow();
         }
-        this->_rear++;
+
+        if (this->isEmpty()) this->_rear = this->_front;
+        else this->_rear++;
+
         this->arr[this->_rear] = item;
     }
     
-    void pop() {
-        if (isEmpty()) {
+    int dequeue() {
+        if (this->isEmpty()) {
             throw QueueUnderflow();
         }
+        
+        int poppedItem = this->arr[this->_front];
         this->_front++;
+        if (this->_front > this->_rear) {
+            this->_rear = -1;
+        }
+
+        return poppedItem;
     }
 
     int length() {
@@ -102,14 +112,14 @@ class Queue {
     }
 
     int front() {
-        if (isEmpty()) {
+        if (this->isEmpty()) {
             throw QueueUnderflow();
         }
         return this->arr[this->_front];
     }
 
     int rear() {
-        if (isEmpty()) {
+        if (this->isEmpty()) {
             throw QueueUnderflow();
         }
         return this->arr[this->_rear];
@@ -117,7 +127,7 @@ class Queue {
 
     void display() {
 
-        if (isEmpty()) {
+        if (this->isEmpty()) {
             cout << "Empty Queue" << endl;
             return;
         }
@@ -134,7 +144,7 @@ class Queue {
 
     void blueprint() {
 
-        if (isEmpty()) {
+        if (this->isEmpty()) {
             cout << "Empty Queue" << endl;
             return;
         }
@@ -143,6 +153,8 @@ class Queue {
             cout << i << " | ";
             if (i < this->_front) {
                 cout << this->arr[i];
+            } else if (i == this->_front && i == this->_rear) {
+                cout << this->arr[i] << " <- FRONT <- REAR";
             } else if (i == this->_front) {
                 cout << this->arr[i] << " <- FRONT";
             } else if (i < this->_rear) {
@@ -161,40 +173,28 @@ class Queue {
 
 int main() {
 
-    Queue q(5);
+    Queue q(4);
 
-    q.push(10);
-    q.push(20);
-    q.push(30);
-    q.push(40);
+    q.enqueue(10);
+    q.enqueue(20);
+    q.display();
+    q.blueprint();
 
-    q.pop();
-    q.pop();
-    q.pop();
-    q.pop();
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
 
+    cout << q.dequeue() << endl;
     q.display();
     q.blueprint();
-    cout << q.front() << endl;
-    cout << q.rear() << endl;
     
-    q.pop();
+    q.enqueue(100);
     q.display();
     q.blueprint();
-    cout << q.front() << endl;
-    cout << q.rear() << endl;
-    
-    q.pop();
+
+    q.enqueue(200);
     q.display();
     q.blueprint();
-    cout << q.front() << endl;
-    cout << q.rear() << endl;
-    
-    q.push(11);
-    q.display();
-    q.blueprint();
-    cout << q.front() << endl;
-    cout << q.rear() << endl;
 
     /*
     In a normal queue, after a bit of insertion and deletion, there will 
