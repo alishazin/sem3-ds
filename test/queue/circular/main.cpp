@@ -7,8 +7,7 @@ size = 4
 
   0   1   2   3
 |   |   |   |   |
-front = -1, rear = -1  ifEmpty() = if rear = -1
-rear = -1 front = prev value
+front = 0, rear = -1   ifEmpty() = if rear = -1
 
   0   1   2   3
 | 8 |   |   |   |
@@ -28,26 +27,36 @@ front = 1, rear = 2
 
   0   1   2   3
 |   | 7 | 6 | 5 |
-front = 1, rear = 3    
+front = 1, rear = 3
 
   0   1   2   3
 | 4 | 7 | 6 | 5 |
-front = 1, rear = 0     
+front = 1, rear = 0
+
+ifFull() conditions:
 
   0   1   2   3
-| 4 | 7 | 6 | 5 |
-front = 2, rear = 1     
+| 1 | 2 | 3 | 4 |
+front = 0, rear = 3
+
+if (front == 0 && rear == size - 1)
 
   0   1   2   3
-| 4 | 7 | 6 | 5 |
-front = 0, rear = 3    
+| 4 | 1 | 2 | 3 |
+front = 1, rear = 0
 
-if front > rear:
-    front - rear == 1
-else if front < rear:
-    rear - front = size - 1
-else:
-    length is 1 so not full
+  0   1   2   3
+| 3 | 4 | 1 | 2 |
+front = 2, rear = 1
+
+  0   1   2   3
+|   | 1 | 2 |   |
+front = 1, rear = 2 (wont match)
+
+if (front != 0 && rear = front - 1)
+
+ifEmpty() condition: 
+if (rear == -1)
 
 */
 
@@ -88,7 +97,7 @@ class CircularQueue {
 
     CircularQueue(int size) {
         this->_size = size;
-        this->_front = -1;
+        this->_front = 0;
         this->_rear = -1;
         arr = (int*) malloc(size * sizeof(int));
     }
@@ -99,40 +108,33 @@ class CircularQueue {
     }
 
     int isFull() {
-        if (this->_front > this->_rear && this->_front - this->_rear == 1) return 1;
-        if (this->_front < this->_rear && this->_rear - this->_front == this->_size - 1) return 1;
+        if ((this->_front == 0 && this->_rear == this->_size - 1 ) || (this->_front != 0 && this->_rear == this->_front - 1)) return 1;
         return 0;
     }
 
-    void push(int item) {
-        if (isFull()) {
+    void enqueue(int item) {
+        if (this->isFull()) {
             throw CircularQueueOverflow();
         }
 
-        if (isEmpty()) {
-            if (this->_rear != this->_front) {
-                this->_rear = this->_front;
-            } else {
-                this->_rear = 0;
-                this->_front = 0;
-            }
-        } else {
-            this->_rear = (this->_rear + 1) % this->_size;
-        }
+        if (this->isEmpty()) this->_rear = this->_front;
+        else this->_rear = (this->_rear + 1) % this->_size;
 
         this->arr[this->_rear] = item;
     }
     
-    void pop() {
-        if (isEmpty()) {
+    int dequeue() {
+        if (this->isEmpty()) {
             throw CircularQueueUnderflow();
         }
-
-        this->_front = (this->_front + 1) % this->_size;
-
-        if (this->_rear == this->_front) {
+        
+        int poppedItem = this->arr[this->_front];
+        if (this->_front == this->_rear) {
             this->_rear = -1;
         }
+        this->_front = (this->_front + 1)%this->_size;
+
+        return poppedItem;
     }
 
     int length() {
@@ -140,55 +142,57 @@ class CircularQueue {
     }
 
     int front() {
-        if (isEmpty()) {
+        if (this->isEmpty()) {
             throw CircularQueueUnderflow();
         }
         return this->arr[this->_front];
     }
 
     int rear() {
-        if (isEmpty()) {
+        if (this->isEmpty()) {
             throw CircularQueueUnderflow();
         }
         return this->arr[this->_rear];
     }
 
     void display() {
-
-        if (isEmpty()) {
-            cout << "Empty Queue" << endl;
+        if (this->isEmpty()) {
+            cout << "[]" << endl;
             return;
         }
 
         cout << "[";
-        for (int i=0; i<this->_size; i++) {
-            cout << this->arr[i] << ", ";
-            // if (i != this->_rear) {
-            //     cout << ", ";
-            // }
+        int i = this->_front;
+        while (i != this->_rear) {
+            cout << this->arr[i];
+            cout << ", ";
+            i = (i + 1)%this->_size;
         }
+        cout << this->arr[i];
         cout << "]" << endl;
     }
 
     void blueprint() {
 
-        if (isEmpty()) {
-            cout << "Empty Queue" << endl;
-            return;
-        }
-
         for (int i=0; i<this->_size; i++) {
+            
             cout << i << " | ";
-            if (i < this->_front) {
-                cout << this->arr[i];
-            } else if (i == this->_front) {
-                cout << this->arr[i] << " <- FRONT";
-            } else if (i < this->_rear) {
-                cout << this->arr[i];
-            } else if (i == this->_rear) {
-                cout << this->arr[i] << " <- REAR";
-            } else if (i > this->_rear) {
+
+            if (this->_rear == -1) {
                 cout << "GARBAGE";
+            } else if (this->_front <= this->_rear && ( i < this->_front || i > this->_rear)) {
+                cout << "GARBAGE";
+            } else if (this->_front > this->_rear && ( i < this->_front && i > this->_rear)) {
+                cout << "GARBAGE";
+            } else {
+                cout << this->arr[i]; 
+            }
+            
+            if (i == this->_rear) {
+                cout << " <- REAR";
+            }
+            if (i == this->_front) {
+                cout << " <- FRONT";
             }
             cout << endl;
         }
@@ -199,34 +203,101 @@ class CircularQueue {
 
 int main() {
 
-    CircularQueue q(5);
-
-    q.push(10);
-    q.push(20);
-    q.push(30);
-    q.push(40);
+    CircularQueue q(4);
     q.display();
-    cout << q.front() << endl;
-    cout << q.rear() << endl;
+    q.blueprint();
 
-    q.pop();
-    q.pop();
-    // q.pop();
-    // q.pop();
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+    q.enqueue(40);
+
     q.display();
-    cout << q.front() << endl;
-    cout << q.rear() << endl;
+    q.blueprint();
 
-    // q.push(50);
-    // q.display();
-    // cout << q.front() << endl;
-    // cout << q.rear() << endl;
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    q.enqueue(50);
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    q.enqueue(60);
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    q.enqueue(70);
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    q.enqueue(80);
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    q.enqueue(90);
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    q.enqueue(100);
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+
+    q.enqueue(110);
+    q.display();
+    q.blueprint();
+
+    q.enqueue(120);
+    q.display();
+    q.blueprint();
+
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
     
-    // q.push(60);
-    // q.display();
-    // cout << q.front() << endl;
-    // cout << q.rear() << endl;
-
+    cout << q.dequeue() << endl;
+    q.display();
+    q.blueprint();
+    
+    q.enqueue(130);
+    q.display();
+    q.blueprint();
 
     return 0;
 }
