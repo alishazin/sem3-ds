@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 class LinkedListException {
@@ -26,10 +27,15 @@ template <class DType = int> class LinkedList: public BaseLinkedList {
             Node* next;
     };
 
-    Node* Head = NULL;
-    int _length = 0;
+    Node* Head;
+    int _length;
 
     public:
+
+    LinkedList() {
+        this->Head = NULL;
+        this->_length = 0;
+    }
 
     DType operator[](int index) {
         return this->Get(index);
@@ -207,7 +213,7 @@ ostream& operator<<(ostream &out, BaseLinkedList &obj) {
 
 int main() {
 
-    LinkedList l;
+    LinkedList<int> l;
     l.Insert(0, 30);
     l.Insert(1, 10);
     l.Append(20);
