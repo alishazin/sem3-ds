@@ -21,8 +21,8 @@ typedef struct Node {
 
 class LinkedList {
 
-    Node* Head = NULL;
-    int _length = 0;
+    Node* Head;
+    int _length;
 
     Node* createNode(int item) {
         Node* node = (Node*) malloc(sizeof(Node));
@@ -49,6 +49,11 @@ class LinkedList {
     }
 
     public:
+    
+    LinkedList() {
+        this->Head = NULL;
+        this->_length = 0;
+    }
 
     int length() {
         return this->_length;
