@@ -34,6 +34,29 @@ class DoublyLinkedList {
         return node;
     }
 
+    Node* Get_Node(int index) {
+        if (index < 0 || (index >= this->_length)) throw DoublyLinkedListIndexOutOfBound();
+
+        Node* temp;
+
+        if (index <= ((this->_length - 1) / 2)) {
+           
+            temp = this->Head;
+            for (int i=0; i<index; i++) {
+                temp = temp->next;
+            }
+
+        } else {
+
+            temp = this->End;
+            for (int i=this->_length - 1; i>index; i--) {
+                temp = temp->prev;
+            }
+
+        }
+        return temp;
+    }
+
     void Insert_Start(Node* node) {
         node->next = this->Head;
         this->Head = node;
@@ -47,9 +70,9 @@ class DoublyLinkedList {
         this->_length++;
     }
     
-    void Insert_End(Node* node, Node* lastNode) {
-        node->prev = lastNode;
-        lastNode->next = node;
+    void Insert_End(Node* node) {
+        node->prev = this->End;
+        this->End->next = node;
         this->End = node;
         this->_length++;
     }
@@ -62,8 +85,55 @@ class DoublyLinkedList {
         this->_length++;
     }
 
-    public:
+    int Delete_Start() {
+        Node* temp = this->Head;
+            
+        int deletedItem = this->Head->value;
+        this->Head = this->Head->next;
+        if (this->Head == NULL) {
+            // If all items deleted
+            this->End = NULL;
+        } else {
+            // If more items are left
+            this->Head->prev = NULL;
+        }
+        this->_length--;
+        free(temp);
+
+        return deletedItem;
+    }
     
+    int Delete_End() {
+        Node* temp = this->End;
+            
+        int deletedItem = this->End->value;
+        this->End = this->End->prev;
+        if (this->End == NULL) {
+            // If all items deleted
+            this->Head = NULL;
+        } else {
+            // If more items are left
+            this->End->next = NULL;
+        }
+        this->_length--;
+        free(temp);
+
+        return deletedItem;
+    }
+
+    int Delete_Middle(int index, Node* nodeToDelete) {
+        int deletedItem = nodeToDelete->value;
+        nodeToDelete->prev->next = nodeToDelete->next;
+        nodeToDelete->next->prev = nodeToDelete->prev;
+
+        this->_length--;
+        free(nodeToDelete);
+
+        return deletedItem;
+    }
+    
+    public:
+
     DoublyLinkedList() {
         this->Head = NULL;
         this->_length = 0;
@@ -83,21 +153,14 @@ class DoublyLinkedList {
             return;
         }
 
-        int count = 1;
-        Node* temp = this->Head;
-        
-        while (temp->next != NULL) {
-            if (count == index) {
-                this->Insert_Middle(node, temp);
-                return;
-            }
-            temp = temp->next;
-            count++;
+        if (index == this->_length) {
+            this->Insert_End(node);
+            return;
         }
 
-        if (this->_length == index) {
-            this->Insert_End(node, temp);
-        }
+        Node* temp = this->Get_Node(index);
+        this->Insert_Middle(node, temp->prev);
+        return;
         
     }
 
@@ -105,46 +168,15 @@ class DoublyLinkedList {
         if (index < 0 || (index >= this->_length)) throw DoublyLinkedListIndexOutOfBound();
 
         if (index == 0) {
-            // Deleting from the beginning
-            Node* temp = this->Head;
-            
-            int deletedItem = this->Head->value;
-            this->Head = this->Head->next;
-            if (this->Head == NULL) {
-                // If all items deleted
-                this->End = NULL;
-            } else {
-                // If more items are left
-                this->Head->prev = NULL;
-            }
-            
-            this->_length--;
-            free(temp);
-            return deletedItem;
-        }
+            return this->Delete_Start();
+        } 
 
-        // Accessing the node to delete
-        Node* temp = this->Head->next;
-        Node* prevValue = this->Head;
-        for (int i=1; i<index; i++) {
-            prevValue = temp;
-            temp = temp->next;
-        }
+        if (index == this->_length - 1) {
+            return this->Delete_End();
+        } 
 
-        // Deleting from the middle or end
-        int deletedItem = temp->value;
-        prevValue->next = temp->next;
-        if (temp->next == NULL) {
-            // If at the end
-            this->End = prevValue;
-        } else {
-            // If at middle
-            temp->next->prev = prevValue;
-        }
-        free(temp);
-        this->_length--;
-
-        return deletedItem;
+        Node* temp = this->Get_Node(index);
+        return this->Delete_Middle(index, temp);
     }
 
     void Display() {
@@ -219,7 +251,8 @@ int main() {
             cin >> temp1;
 
             try {
-                cout << "Deleted Item: " << List.Delete(temp1);
+                int deletedValue = List.Delete(temp1);
+                cout << "Deleted Item: " << deletedValue;
             } catch(DoublyLinkedListException &e) {
                 cout << "ERROR: " << e.msg() << endl;
             }
@@ -249,6 +282,7 @@ int main() {
         cout << endl;
 
     }
+
 
     return 0;
 }
