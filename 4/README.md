@@ -19,7 +19,7 @@
 9. For multiplication of matrix.
 
 10. Declare three for loops, One traversing from i=0 to i=row size of mat1. Second from j=0 to j=col size of mat2. Third one traversing from k=0 to k=col size of mat1 or row size of mat2
-11.	Then inside all three loops, mat3[i][j] += mat1[i][k] * mat2[k][j];
+11. Then inside all three loops, mat3[i][j] += mat1[i][k] * mat2[k][j];
 
 12. STOP
 ```
