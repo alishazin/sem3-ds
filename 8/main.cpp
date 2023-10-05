@@ -34,29 +34,6 @@ class DoublyLinkedList {
         return node;
     }
 
-    Node* Get_Node(int index) {
-        if (index < 0 || (index >= this->_length)) throw DoublyLinkedListIndexOutOfBound();
-
-        Node* temp;
-
-        if (index <= ((this->_length - 1) / 2)) {
-           
-            temp = this->Head;
-            for (int i=0; i<index; i++) {
-                temp = temp->next;
-            }
-
-        } else {
-
-            temp = this->End;
-            for (int i=this->_length - 1; i>index; i--) {
-                temp = temp->prev;
-            }
-
-        }
-        return temp;
-    }
-
     void Insert_Start(Node* node) {
         node->next = this->Head;
         this->Head = node;
@@ -142,6 +119,35 @@ class DoublyLinkedList {
     int length() {
         return this->_length;
     }
+
+    Node* Get_Node(int index, int instance) {
+        if (index < 0 || (index >= this->_length)) throw DoublyLinkedListIndexOutOfBound();
+
+        Node* temp;
+        int count = 0;
+
+        if (index <= ((this->_length - 1) / 2)) {
+           
+            temp = this->Head;
+            for (int i=0; i<index; i++) {
+                count++;
+                temp = temp->next;
+            }
+            if (instance == 1) cout << "Number of nodes traversed from left: " << count << endl;
+
+        } else {
+
+            temp = this->End;
+            for (int i=this->_length - 1; i>index; i--) {
+                count++;
+                temp = temp->prev;
+            }
+            if (instance == 1) cout << "Number of nodes traversed from right: " << count << endl;
+        }
+
+
+        return temp;
+    }
     
     void Insert(int index, int item) {
         Node* node = this->createNode(item);
@@ -158,7 +164,7 @@ class DoublyLinkedList {
             return;
         }
 
-        Node* temp = this->Get_Node(index);
+        Node* temp = this->Get_Node(index, 0);
         this->Insert_Middle(node, temp->prev);
         return;
         
@@ -175,7 +181,7 @@ class DoublyLinkedList {
             return this->Delete_End();
         } 
 
-        Node* temp = this->Get_Node(index);
+        Node* temp = this->Get_Node(index, 0);
         return this->Delete_Middle(index, temp);
     }
 
@@ -226,7 +232,8 @@ int main() {
         cout << "2. Delete" << endl;
         cout << "3. Display" << endl;
         cout << "4. Display Reverse" << endl;
-        cout << "5. Exit" << endl;
+        cout << "5. Access A Node" << endl;
+        cout << "6. Exit" << endl;
 
         cout << "Enter Choice: ";
         cin >> choice;
@@ -264,8 +271,21 @@ int main() {
         } else if (choice == 4) {
             
             List.DisplayReverse();
-
+ 
         } else if (choice == 5) {
+
+            cout << "Enter index to access : ";
+            cin >> temp1;
+            
+            try {
+                
+                int accessedValue = List.Get_Node(temp1, 1)->value;
+                cout << "Accessed Node: " << accessedValue;
+            } catch(DoublyLinkedListException &e) {
+                cout << "ERROR: " << e.msg() << endl;
+            }
+ 
+        } else if (choice == 6) {
             
             cout << "\n--------- Author ----------------" << endl;
     		cout << "Ali Izzath Shazin" << endl;
