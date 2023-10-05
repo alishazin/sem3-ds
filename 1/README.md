@@ -16,3 +16,23 @@
 
 8. STOP
 ```
+
+# Output
+
+```
+Enter size of array: 5
+Enter element 1 : 5
+Enter element 2 : -2
+Enter element 3 : -3
+Enter element 4 : 2
+Enter element 5 : 6
+
+Minimum value is : -3
+Maximum value is : 6
+
+--------- Author ----------------
+Ali Izzath Shazin
+220071601028
+B. Tech CSE A
+
+```
