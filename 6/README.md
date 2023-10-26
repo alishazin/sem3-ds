@@ -1,3 +1,9 @@
+# Aim
+```
+To implement queue data structure with Enqueue, Dequeue, Peek and Display.
+```
+
+
 # Algorithm
 ```
 1. START
