@@ -1,3 +1,8 @@
+# Aim
+```
+To find minimum and maximum number present in an array.	
+```
+
 # Algorithm
 ```
 1. START
