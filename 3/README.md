@@ -1,3 +1,8 @@
+# Aim
+```
+To implement insert,delete and traverse operations on linear array.
+```
+
 # Algorithm
 ```
 1. START
