@@ -1,3 +1,9 @@
+# Aim
+```
+To find consecutive letters if they appear in the given character array.
+```
+
+
 # Algorithm
 ```
 1. START
