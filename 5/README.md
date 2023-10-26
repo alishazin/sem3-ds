@@ -1,3 +1,9 @@
+# Aim
+```
+To implement stack data structure with Push, Pop and Peek.
+```
+
+
 # Algorithm
 ```
 1. START
