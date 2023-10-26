@@ -1,3 +1,9 @@
+# Aim
+```
+To implement Singly Linked List with Insertion, Deletion and Display Operations.
+```
+
+
 # Algorithm
 ```
 
