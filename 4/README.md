@@ -1,3 +1,8 @@
+# Aim
+```
+To implement addition, subtraction and multiplication of matrix.
+```
+
 # Algorithm
 ```
 1. START
