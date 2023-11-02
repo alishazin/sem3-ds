@@ -9,18 +9,15 @@ typedef struct Node {
 } Node;  
 
 Node* rootNode = NULL;
-  
 
 int height(Node *N) {  
     if (N == NULL) return 0;  
     return N->height;  
 }  
-  
  
 int max(int a, int b) {  
     return (a > b)? a : b;  
 }  
-  
 
 Node* newNode(int key) {  
     Node* node = new Node(); 
@@ -46,7 +43,6 @@ Node *rightRotate(Node *y) {
     // Return new root  
     return x;  
 }  
-  
 
 Node *leftRotate(Node *x) {  
     Node *y = x->right;  
@@ -71,13 +67,19 @@ int getBalance(Node *N) {
 }  
 
 Node* insert(Node* node, int value) {  
-    if (node == NULL)  
+    if (node == NULL) {
+        cout << "NEW" << endl;
         return newNode(value);
+    }
+
+    cout << "Before" << node->value << endl;
   
     if (value <= node->value)  
         node->left = insert(node->left, value);  
     else if (value > node->value)  
         node->right = insert(node->right, value);  
+
+    cout << "After" << node->value << endl;
   
     node->height = 1 + max(height(node->left), height(node->right));  
   
@@ -88,11 +90,14 @@ Node* insert(Node* node, int value) {
         return rightRotate(node);  
   
     // Right Right Case  
-    if (balance < -1 && value > node->right->value)  
+    if (balance < -1 && value > node->right->value) {
+        cout << "Left Rotation" << endl;  
         return leftRotate(node);  
+    }
   
     // Left Right Case  
     if (balance > 1 && value > node->left->value) {  
+        cout << "Left Right Rotation" << endl;  
         node->left = leftRotate(node->left);  
         return rightRotate(node);  
     }  
@@ -107,8 +112,9 @@ Node* insert(Node* node, int value) {
 } 
 
 void Insert(int value) {
+    cout << "--------------" << endl;
     rootNode = insert(rootNode, value); 
-    cout << rootNode->value << endl;
+    cout << "Root: " << rootNode->value << endl;
 }
 
 void DisplaySubTree(Node* node, int indent, int side) {
@@ -146,11 +152,11 @@ int main() {
     Insert(60);  
     Insert(70);  
     Insert(80);  
-    Insert(75);  
+    Insert(90);  
     Insert(40);  
     Insert(30);  
 
     DisplaySubTree(rootNode, 0, 0);
-      
+
     return 0;  
 } 
