@@ -7,6 +7,8 @@ typedef struct Node {
     Node *right;  
     int height;  
 } Node;  
+
+Node* rootNode = NULL;
   
 
 int height(Node *N) {  
@@ -67,7 +69,7 @@ int getBalance(Node *N) {
     if (N == NULL) return 0;  
     return height(N->left) - height(N->right);  
 }  
-   
+
 Node* insert(Node* node, int value) {  
     if (node == NULL)  
         return newNode(value);
@@ -102,7 +104,12 @@ Node* insert(Node* node, int value) {
     }  
   
     return node;  
-}   
+} 
+
+void Insert(int value) {
+    rootNode = insert(rootNode, value); 
+    cout << rootNode->value << endl;
+}
 
 void DisplaySubTree(Node* node, int indent, int side) {
 
@@ -134,16 +141,16 @@ void DisplaySubTree(Node* node, int indent, int side) {
 
 
 int main() {  
-    Node *root = NULL;   
-    
-    root = insert(root, 10);  
-    root = insert(root, 20);  
-    root = insert(root, 30);  
-    root = insert(root, 40);  
-    root = insert(root, 50);  
-    root = insert(root, 25);  
 
-    DisplaySubTree(root, 0, 0);
+    Insert(50);  
+    Insert(60);  
+    Insert(70);  
+    Insert(80);  
+    Insert(75);  
+    Insert(40);  
+    Insert(30);  
+
+    DisplaySubTree(rootNode, 0, 0);
       
     return 0;  
 } 
