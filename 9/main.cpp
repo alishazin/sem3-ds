@@ -63,7 +63,7 @@ class BinarySearchTree {
             cout << "R";
         }
 
-        if (node->left == NULL) {
+        if (node->left == NULL && node->right == NULL) {
             cout << "|" << node->value << endl;
         } else {
             cout << "\\" << node->value << endl;
